@@ -57,6 +57,8 @@ class PlayersController < ApplicationController
   end
 
   def chess_match
+    @players = Player.all
+    redirect_to players_path, flash: {notice: "You need at least two players to record a match"} if @players.count < 2
   end
 
   def create_match

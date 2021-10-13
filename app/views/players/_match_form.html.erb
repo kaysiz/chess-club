@@ -1,0 +1,8 @@
+<%= form_with url: "/create_match", method: :post do |form| %>
+  <div class="field">
+    <%= form.label :Winner %>
+    <%= form.select(:winner, options_for_select(@players.collect{|player| ["#{player.first_name} #{player.last_name}", player.id]}),
+                                    {include_hidden: false}) %>
+  </div>
+  <%= form.submit "Record match" %>
+<% end %>
