@@ -1,8 +1,23 @@
-<%= form_with url: "/create_match", method: :post do |form| %>
+<%= form_with url: "/players/create_match", method: :post do |form| %>
+<% if flash.any? %>
+  <div id="error_explanation">
+    <ul>
+      <% flash.each do |type, msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
   <div class="field">
-    <%= form.label :Winner %>
-    <%= form.select(:winner, options_for_select(@players.collect{|player| ["#{player.first_name} #{player.last_name}", player.id]}),
+    <%= form.label :player_1 %>
+    <%= form.select(:player_1, options_for_select(@players.collect{|player_1| ["#{player_1.first_name} #{player_1.last_name}", player_1.id]}),
                                     {include_hidden: false}) %>
+    <%= form.label :player_2 %>
+    <%= form.select(:player_2, options_for_select(@players.collect{|player_2| ["#{player_2.first_name} #{player_2.last_name}", player_2.id]}),
+                                    {include_hidden: false}) %>
+    <%= form.label :match_status %>
+    <%= form.select :match_status, [["Player 1 Wins", 1], ["Player 2 Wins", 2], ["Draw", 3]], {include_hidden: false} %>
+
   </div>
   <%= form.submit "Record match" %>
 <% end %>

@@ -1,6 +1,6 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Players</h1>
+<h1>Players LeaderBoard</h1>
 
 <table>
   <thead>
@@ -9,6 +9,7 @@
       <th>Last name</th>
       <th>Email</th>
       <th>Games played</th>
+      <th>Current Rank</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -20,6 +21,7 @@
         <td><%= player.last_name %></td>
         <td><%= player.email %></td>
         <td><%= player.games_played %></td>
+        <td><%= player.current_rank %></td>
         <td><%= link_to 'Show', player %></td>
         <td><%= link_to 'Edit', edit_player_path(player) %></td>
         <td><%= link_to 'Destroy', player, method: :delete, data: { confirm: 'Are you sure?' } %></td>

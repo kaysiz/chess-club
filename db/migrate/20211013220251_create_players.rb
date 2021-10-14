@@ -6,7 +6,7 @@ class CreatePlayers < ActiveRecord::Migration[6.0]
       t.string :email
       t.date   :birthday
       t.integer :games_played, default: 0
-      t.decimal :current_rank, :precision => 10, :scale => 2
+      t.integer :current_rank, default: 1
       t.timestamps
     end
   end

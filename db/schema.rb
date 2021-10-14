@@ -21,7 +21,7 @@ ActiveRecord::Schema.define(version: 2021_10_13_220251) do
     t.string "email"
     t.date "birthday"
     t.integer "games_played", default: 0
-    t.decimal "current_rank", precision: 10, scale: 2
+    t.integer "current_rank", default: 1
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

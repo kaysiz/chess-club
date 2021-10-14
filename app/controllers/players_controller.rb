@@ -3,7 +3,7 @@ class PlayersController < ApplicationController
 
   # GET /players or /players.json
   def index
-    @players = Player.all
+    @players = Player.order(current_rank: :desc)
   end
 
   # GET /players/1 or /players/1.json
@@ -62,6 +62,14 @@ class PlayersController < ApplicationController
   end
 
   def create_match
+    player_1 = Player.find(params[:player_1])
+    player_2 = Player.find(params[:player_2])
+    if player_1 == player_2
+      redirect_to chess_match_players_path, flash: {notice: "Player 1 and Player 2 cannot be the same person"}
+      return
+    end
+    calculate_player_position(player_1, player_2, params[:match_status])
+    redirect_to players_path, flash: {notice: "Match recorded!"}
   end
 
   private
@@ -72,6 +80,33 @@ class PlayersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def player_params
-      params.require(:player).permit(:first_name, :last_name, :email, :games_played)
+      params.require(:player).permit(:first_name, :last_name, :email, :birthday, :games_played)
+    end
+
+    def calculate_player_position(player_1, player_2, match_status)
+      # TODO: refactor this method
+      if match_status.to_i == 2
+        if player_2.current_rank > player_1.current_rank
+          player_2.decrement!(:current_rank, ((player_2.current_rank - player_1.current_rank)/2))
+          player_1.increment!(:current_rank)
+        end
+      end
+
+      if match_status.to_i == 1
+        if player_1.current_rank > player_2.current_rank
+          player_1.decrement!(:current_rank, ((player_1.current_rank - player_2.current_rank)/2))
+          player_2.increment!(:current_rank)
+        end
+      end
+
+      if match_status.to_i == 3
+        players = [player_1, player_2].sort_by(&:current_rank)
+        rank_difference = players.last.current_rank - players.first.current_rank
+        if rank_difference > 1
+          players.last.decrement!(:current_rank)
+        end 
+      end
+      player_1.increment!(:games_played)
+      player_2.increment!(:games_played)
     end
 end
